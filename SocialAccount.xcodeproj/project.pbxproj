@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D06DE1D53A94232AB3784FD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3F3CD729C34C3289790B2E /* libPods.a */; };
+		387E88FB19D13DC300FD4E46 /* SocialAccount.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 387E88FA19D13DC300FD4E46 /* SocialAccount.h */; };
+		387E88FD19D13DC300FD4E46 /* SocialAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 387E88FC19D13DC300FD4E46 /* SocialAccount.m */; };
+		387E891019D13F5500FD4E46 /* SocialErrorSample.m in Sources */ = {isa = PBXBuildFile; fileRef = 387E890F19D13F5500FD4E46 /* SocialErrorSample.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		387E88F519D13DC300FD4E46 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				387E88FB19D13DC300FD4E46 /* SocialAccount.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		387E88F719D13DC300FD4E46 /* libSocialAccount.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSocialAccount.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		387E88FA19D13DC300FD4E46 /* SocialAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocialAccount.h; sourceTree = "<group>"; };
+		387E88FC19D13DC300FD4E46 /* SocialAccount.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocialAccount.m; sourceTree = "<group>"; };
+		387E890219D13DC300FD4E46 /* SocialAccountTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SocialAccountTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		387E890519D13DC300FD4E46 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		387E890E19D13F5500FD4E46 /* SocialErrorSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialErrorSample.h; sourceTree = "<group>"; };
+		387E890F19D13F5500FD4E46 /* SocialErrorSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialErrorSample.m; sourceTree = "<group>"; };
+		4F3F3CD729C34C3289790B2E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		387E88F419D13DC300FD4E46 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D06DE1D53A94232AB3784FD /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		387E88FF19D13DC300FD4E46 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		387E88EE19D13DC300FD4E46 = {
+			isa = PBXGroup;
+			children = (
+				387E88F919D13DC300FD4E46 /* SocialAccount */,
+				387E890319D13DC300FD4E46 /* SocialAccountTests */,
+				387E88F819D13DC300FD4E46 /* Products */,
+				ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */,
+				51548FE059304870B036C749 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		387E88F819D13DC300FD4E46 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				387E88F719D13DC300FD4E46 /* libSocialAccount.a */,
+				387E890219D13DC300FD4E46 /* SocialAccountTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		387E88F919D13DC300FD4E46 /* SocialAccount */ = {
+			isa = PBXGroup;
+			children = (
+				387E88FA19D13DC300FD4E46 /* SocialAccount.h */,
+				387E88FC19D13DC300FD4E46 /* SocialAccount.m */,
+				387E890E19D13F5500FD4E46 /* SocialErrorSample.h */,
+				387E890F19D13F5500FD4E46 /* SocialErrorSample.m */,
+			);
+			path = SocialAccount;
+			sourceTree = "<group>";
+		};
+		387E890319D13DC300FD4E46 /* SocialAccountTests */ = {
+			isa = PBXGroup;
+			children = (
+				387E890419D13DC300FD4E46 /* Supporting Files */,
+			);
+			path = SocialAccountTests;
+			sourceTree = "<group>";
+		};
+		387E890419D13DC300FD4E46 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				387E890519D13DC300FD4E46 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		51548FE059304870B036C749 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F3F3CD729C34C3289790B2E /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		387E88F619D13DC300FD4E46 /* SocialAccount */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 387E890819D13DC300FD4E46 /* Build configuration list for PBXNativeTarget "SocialAccount" */;
+			buildPhases = (
+				37681050F87B49CF8F444BED /* Check Pods Manifest.lock */,
+				387E88F319D13DC300FD4E46 /* Sources */,
+				387E88F419D13DC300FD4E46 /* Frameworks */,
+				387E88F519D13DC300FD4E46 /* CopyFiles */,
+				C41D62D839E84D9487F1B3B0 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SocialAccount;
+			productName = SocialAccount;
+			productReference = 387E88F719D13DC300FD4E46 /* libSocialAccount.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		387E890119D13DC300FD4E46 /* SocialAccountTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 387E890B19D13DC300FD4E46 /* Build configuration list for PBXNativeTarget "SocialAccountTests" */;
+			buildPhases = (
+				387E88FE19D13DC300FD4E46 /* Sources */,
+				387E88FF19D13DC300FD4E46 /* Frameworks */,
+				387E890019D13DC300FD4E46 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SocialAccountTests;
+			productName = SocialAccountTests;
+			productReference = 387E890219D13DC300FD4E46 /* SocialAccountTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		387E88EF19D13DC300FD4E46 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = youknowone.org;
+				TargetAttributes = {
+					387E88F619D13DC300FD4E46 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+					387E890119D13DC300FD4E46 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 387E88F219D13DC300FD4E46 /* Build configuration list for PBXProject "SocialAccount" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 387E88EE19D13DC300FD4E46;
+			productRefGroup = 387E88F819D13DC300FD4E46 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				387E88F619D13DC300FD4E46 /* SocialAccount */,
+				387E890119D13DC300FD4E46 /* SocialAccountTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		387E890019D13DC300FD4E46 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		37681050F87B49CF8F444BED /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C41D62D839E84D9487F1B3B0 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		387E88F319D13DC300FD4E46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				387E88FD19D13DC300FD4E46 /* SocialAccount.m in Sources */,
+				387E891019D13F5500FD4E46 /* SocialErrorSample.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		387E88FE19D13DC300FD4E46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		387E890619D13DC300FD4E46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		387E890719D13DC300FD4E46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		387E890919D13DC300FD4E46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/FoundationExtension\"",
+					"\"${PODS_ROOT}/Headers/FoundationExtension/AddressBookExtension\"",
+					"\"${PODS_ROOT}/Headers/FoundationExtension/UIKitExtension\"",
+					"\"${PODS_ROOT}/Headers/STLOAuth\"",
+					"\"${PODS_ROOT}/Headers/TwitterReverseAuth\"",
+					"\"${PODS_ROOT}/Headers/TwitterReverseAuth/TwitterReverseAuth\"",
+					"\"${PODS_ROOT}/Headers/cdebug\"",
+					.,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		387E890A19D13DC300FD4E46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/FoundationExtension\"",
+					"\"${PODS_ROOT}/Headers/FoundationExtension/AddressBookExtension\"",
+					"\"${PODS_ROOT}/Headers/FoundationExtension/UIKitExtension\"",
+					"\"${PODS_ROOT}/Headers/STLOAuth\"",
+					"\"${PODS_ROOT}/Headers/TwitterReverseAuth\"",
+					"\"${PODS_ROOT}/Headers/TwitterReverseAuth/TwitterReverseAuth\"",
+					"\"${PODS_ROOT}/Headers/cdebug\"",
+					.,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		387E890C19D13DC300FD4E46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SocialAccountTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		387E890D19D13DC300FD4E46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SocialAccountTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		387E88F219D13DC300FD4E46 /* Build configuration list for PBXProject "SocialAccount" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				387E890619D13DC300FD4E46 /* Debug */,
+				387E890719D13DC300FD4E46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		387E890819D13DC300FD4E46 /* Build configuration list for PBXNativeTarget "SocialAccount" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				387E890919D13DC300FD4E46 /* Debug */,
+				387E890A19D13DC300FD4E46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		387E890B19D13DC300FD4E46 /* Build configuration list for PBXNativeTarget "SocialAccountTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				387E890C19D13DC300FD4E46 /* Debug */,
+				387E890D19D13DC300FD4E46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 387E88EF19D13DC300FD4E46 /* Project object */;
+}
