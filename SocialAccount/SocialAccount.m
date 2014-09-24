@@ -286,6 +286,21 @@
     }];
 }
 
+- (void)getFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    // following
+    NSURL *requestURL = @"https://api.twitter.com/1.1/friends/list.json".URL;
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:requestURL parameters:@{}];
+    NSError *error = nil;
+    request.account = [self accountForAuthorizedIdentifier:&error];
+    if (request.account == nil) {
+        completion(nil, error);
+        return;
+    }
+    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+        [self handleRequestResult:responseData error:error completion:completion];
+    }];
+}
+
 #pragma mark -
 
 - (NSString *)APIKeyForTwitterReverseAuth:(TRATwitterReverseAuth *)reverseAuth {
