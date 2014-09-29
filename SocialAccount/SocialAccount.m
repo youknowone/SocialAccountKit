@@ -111,22 +111,24 @@
         if (granted) {
             NSArray *accounts = [self.manager.store accountsWithAccountType:self.type];
             if (accounts.count > 1) {
-                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Accounts" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
-                [actionSheet setAssociatedObject:accounts forKey:@"accounts"];
-                [actionSheet setAssociatedObject:completion forKey:@"completion" policy:OBJC_ASSOCIATION_COPY_NONATOMIC];
-                for (ACAccount *account in accounts) {
-                    [actionSheet addButtonWithTitle:[@"@%@" format:account.username]];
-                }
-                [actionSheet showInView:[UIApplication sharedApplication].windows.lastObject];
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Accounts" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
+                    [actionSheet setAssociatedObject:accounts forKey:@"accounts"];
+                    [actionSheet setAssociatedObject:completion forKey:@"completion" policy:OBJC_ASSOCIATION_COPY_NONATOMIC];
+                    for (ACAccount *account in accounts) {
+                        [actionSheet addButtonWithTitle:[@"@%@" format:account.username]];
+                    }
+                    [actionSheet showInView:[UIApplication sharedApplication].windows.lastObject];
+                });
             } else if (accounts.count == 1) {
                 ACAccount *account = accounts.lastObject;
                 self->_accountCandidate = account;
                 [self remoteSessionLoginAccountDidSelectedWithCompletion:completion];
             } else {
-                completion(NO, error ?: [NSError errorWithDomain:@"com.apple.accounts" code:6 userInfo:@{@"description": @"No available accounts"}]); // only twitter comes here
+                completion(nil, error ?: [NSError errorWithDomain:@"com.apple.accounts" code:6 userInfo:@{@"description": @"No available accounts"}]); // only twitter comes here
             }
         } else {
-            completion(NO, error ?: [NSError errorWithDomain:@"com.apple.accounts.disgrant" code:0 userInfo:@{@"description": @"User disgranted facebook account"}]);
+            completion(nil, error ?: [NSError errorWithDomain:@"com.apple.accounts.disgrant" code:0 userInfo:@{@"description": @"User disgranted facebook account"}]);
         }
     }];
 }

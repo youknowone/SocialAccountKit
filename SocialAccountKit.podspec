@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "SocialAccountKit"
-  s.version      = "0.2"
+  s.version      = "0.3"
   s.summary      = "Accounts.framework/Social.framework boilerplate toolkit."
   s.homepage     = "https://github.com/youknowone/SocialAccountKit"
   s.license      = "2-clause BSD"
   s.author       = { "Jeong YunWon" => "jeong@youknowone.org" }
-  s.source       = { :git => "https://github.com/youknowone/SocialAccountKit.git", :tag => "0.2" }
+  s.source       = { :git => "https://github.com/youknowone/SocialAccountKit.git", :tag => "0.3" }
   s.platform     = :ios, '6.0'
   s.header_dir   = "SocialAccount"
   s.source_files = "SocialAccount/*.h", "SocialAccount/*.m"
