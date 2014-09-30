@@ -67,7 +67,9 @@
 - (void)removeSavedAccount {
     ACAccount *account = [self accountForAuthorizedIdentifier:NULL];
     if (account) {
-        [self.manager.store removeAccount:account withCompletionHandler:NULL];
+        [self.manager.store removeAccount:account withCompletionHandler:^(BOOL success, NSError *error) {
+            // iOS7- requires blank block
+        }];
     }
 }
 
