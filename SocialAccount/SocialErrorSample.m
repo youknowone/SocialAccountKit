@@ -22,6 +22,10 @@ BOOL SocialErrorHandleSample(NSError *error) {
             title = @"No available accounts";
             message = @"Add accounts in Settings->Facebook/Twitter";
             break;
+        case SocialErrorAccountNotAvailable:
+            title = @"This account is not available";
+            message = @"It maybe an error of usage of Accounts API.";
+            break;
         case SocialErrorDisallowedByUser:
             title = @"User disgranted";
             message = @"Settings->Facebook/Twitter and fix the setting.";

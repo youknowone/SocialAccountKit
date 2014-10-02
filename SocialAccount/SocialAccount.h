@@ -29,6 +29,7 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 @optional
 
+- (NSString *)facebookAPIVersionForSocialAccount:(SASocialAccount *)account;
 - (NSString *)facebookAudienceForSocialAccount:(SASocialAccount *)account;
 
 @end
@@ -71,6 +72,8 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 - (void)publishFeed:(NSDictionary *)feed completion:(SASocialAPIRequestAccessCompletionHandler)completion;
 - (void)publishFeedWithMessage:(NSString *)message completion:(SASocialAPIRequestAccessCompletionHandler)completion;
+- (void)getTaggableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
+- (void)getInvitableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
 
 @end
 
@@ -82,6 +85,7 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 @property(readonly,nonatomic) TRATwitterReverseAuth *reverseAuth;
 
 - (void)updateStatus:(NSString *)status completion:(SASocialAPIRequestAccessCompletionHandler)completion;
+- (void)getFollowingsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
 
 @end
 
@@ -104,6 +108,7 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 typedef enum : NSUInteger {
     SocialErrorUnknown,
     SocialErrorNoAccountsAvailable,
+    SocialErrorAccountNotAvailable,
     SocialErrorDisallowedByUser,
     SocialErrorMatchingAccountNotFound,
 

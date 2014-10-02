@@ -29,6 +29,90 @@
 @end
 
 
+@interface SASocialPaginationRequest : NSObject
+
+@property(nonatomic,copy) NSString *serviceType;
+@property(nonatomic,copy) NSURL *URL;
+@property(nonatomic,copy) NSDictionary *parameter;
+
+@property(nonatomic,readonly) NSMutableArray *data;
+
+- (instancetype)initWithURL:(NSURL *)URL parameter:(NSDictionary *)parameter;
+- (void)performRequestWithAccount:(ACAccount *)account completion:(SASocialAPIRequestAccessCompletionHandler)completion;
+
+@end
+
+
+@implementation SASocialPaginationRequest
+
+- (instancetype)init {
+    self = [super init];
+    if (self != nil) {
+        self->_data = [NSMutableArray array];
+    }
+    return self;
+}
+
+- (instancetype)initWithURL:(NSURL *)URL parameter:(NSDictionary *)parameter {
+    self = [self init];
+    if (self != nil) {
+        self.URL = URL;
+        self.parameter = parameter;
+    }
+    return self;
+}
+
+- (void)performRequestWithAccount:(ACAccount *)account completion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    SLRequest *request = [SLRequest requestForServiceType:self.serviceType requestMethod:SLRequestMethodGET URL:self.URL parameters:self.parameter];
+    request.account = account;
+    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *URLResponse, NSError *error) {
+        if (error != nil) {
+            completion(nil, error);
+            return;
+        }
+        id JSONObject = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+        if (error != nil) {
+            completion(nil, error);
+            return;
+        }
+        error = [self errorFromResponseObject:JSONObject];
+        if (error != nil) {
+            completion(nil, error);
+            return;
+        }
+        // dlog(1, @"partial data: %@", JSONObject);
+        [self.data addObjectsFromArray:[self dataArrayFromResponseObject:JSONObject]];
+        NSURL *nextURL = [self nextURLFromResponseObject:JSONObject];
+        if (nextURL != nil) {
+            self.URL = nextURL;
+            [self performRequestWithAccount:account completion:completion];
+        } else {
+            completion(self.responseObject, nil);
+        }
+    }];
+}
+
+- (NSError *)errorFromResponseObject:(id)JSONObject {
+    return nil;
+}
+
+- (NSURL *)nextURLFromResponseObject:(id)JSONObject {
+    dassert(NO);
+    return nil;
+}
+
+- (NSArray *)dataArrayFromResponseObject:(id)JSONObject {
+    dassert(NO);
+    return nil;
+}
+
+- (id)responseObject {
+    return [self.data copy];
+}
+
+@end
+
+
 @implementation SASocialAccount
 
 - (instancetype)initWithManager:(SASocialManager *)manager {
@@ -160,6 +244,40 @@
 @end
 
 
+@interface SAFacebookPaginationRequest: SASocialPaginationRequest
+
+@end
+
+
+@implementation SAFacebookPaginationRequest
+
+- (instancetype)init {
+    self = [super init];
+    if (self != nil) {
+        self.serviceType = SLServiceTypeFacebook;
+    }
+    return self;
+}
+
+- (NSError *)errorFromResponseObject:(id)JSONObject {
+    return nil;
+}
+
+- (NSURL *)nextURLFromResponseObject:(id)JSONObject {
+    return [JSONObject[@"paging"][@"next"] URL];
+}
+
+- (NSArray *)dataArrayFromResponseObject:(id)JSONObject {
+    return JSONObject[@"data"];
+}
+
+- (id)responseObject {
+    return @{@"data": self.data};
+}
+
+@end
+
+
 @interface SAFacebookAccount ()
 
 - (NSURL *)URLForEdge:(NSString *)edge;
@@ -170,8 +288,14 @@
 @implementation SAFacebookAccount
 
 - (NSURL *)URLForEdge:(NSString *)edge {
-    const NSString *format = @"https://graph.facebook.com/%@";
-    return [format format:edge].URL;
+    NSString *URL = @"https://graph.facebook.com/";
+    if ([self.dataSource respondsToSelector:@selector(facebookAPIVersionForSocialAccount:)]) {
+        NSString *version = [self.dataSource facebookAPIVersionForSocialAccount:self];
+        if (version) {
+            URL = [URL stringByAppendingFormat:@"%@/", version];
+        }
+    }
+    return [[URL stringByAppendingString:edge] URL];
 }
 
 - (instancetype)initWithManager:(SASocialManager *)manager {
@@ -242,11 +366,79 @@
     }
 
     NSURL *URL = [self URLForEdge:@"/me/friends"];
-    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodGET URL:URL parameters:@{}];
-    request.account = account;
-    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *URLResponse, NSError *error) {
-        [self handleRequestResult:responseData error:error completion:completion];
-    }];
+    SASocialPaginationRequest *request = [[SAFacebookPaginationRequest alloc] initWithURL:URL parameter:@{}];
+    [request performRequestWithAccount:account completion:completion];
+}
+
+- (void)getTaggableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    NSError *error = nil;
+    ACAccount *account = [self accountForAuthorizedIdentifier:&error];
+    if (account == nil) {
+        completion(nil, error);
+        return;
+    }
+
+    NSURL *URL = [self URLForEdge:@"/me/taggable_friends"];
+    SASocialPaginationRequest *request = [[SAFacebookPaginationRequest alloc] initWithURL:URL parameter:@{}];
+    [request performRequestWithAccount:account completion:completion];
+}
+
+- (void)getInvitableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    NSError *error = nil;
+    ACAccount *account = [self accountForAuthorizedIdentifier:&error];
+    if (account == nil) {
+        completion(nil, error);
+        return;
+    }
+
+    NSURL *URL = [self URLForEdge:@"/me/invitable_friends"];
+    SASocialPaginationRequest *request = [[SAFacebookPaginationRequest alloc] initWithURL:URL parameter:@{}];
+    [request performRequestWithAccount:account completion:completion];
+}
+
+@end
+
+
+@interface SATwitterUserPaginationRequest: SASocialPaginationRequest
+
+@end
+
+
+@implementation SATwitterUserPaginationRequest
+
+- (instancetype)init {
+    self = [super init];
+    if (self != nil) {
+        self.serviceType = SLServiceTypeTwitter;
+    }
+    return self;
+}
+
+- (NSError *)errorFromResponseObject:(id)JSONObject {
+    if (JSONObject[@"errors"] != nil) {
+        NSDictionary *errorObject = [JSONObject[@"errors"] lastObject];
+        return [NSError errorWithDomain:SocialErrorDomain(@"twitter") code:[errorObject[@"code"] integerValue] userInfo:errorObject];
+    }
+    return nil;
+}
+
+- (NSURL *)nextURLFromResponseObject:(id)JSONObject {
+    NSString *URLString = self.URL.absoluteString;
+    NSString *lastCursor = [[URLString componentsSeparatedByString:@"="] lastObject];
+    NSRange lastCursorRange = NSMakeRange(URLString.length - lastCursor.length, lastCursor.length);
+    NSString *newCursor = JSONObject[@"previous_cursor_str"];
+    if (newCursor == nil) {
+        return nil;
+    }
+    return [[URLString stringByReplacingCharactersInRange:lastCursorRange withString:newCursor] URL];
+}
+
+- (NSArray *)dataArrayFromResponseObject:(id)JSONObject {
+    return JSONObject[@"users"];
+}
+
+- (id)responseObject {
+    return @{@"users": self.data};
 }
 
 @end
@@ -290,19 +482,22 @@
     }];
 }
 
+- (void)getFollowingsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    [self getFriendsWithCompletion:completion];
+}
+
 - (void)getFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
     // following
-    NSURL *requestURL = @"https://api.twitter.com/1.1/friends/list.json".URL;
-    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:requestURL parameters:@{}];
     NSError *error = nil;
-    request.account = [self accountForAuthorizedIdentifier:&error];
-    if (request.account == nil) {
+    ACAccount *account = [self accountForAuthorizedIdentifier:&error];
+    if (account == nil) {
         completion(nil, error);
         return;
     }
-    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-        [self handleRequestResult:responseData error:error completion:completion];
-    }];
+
+    NSURL *requestURL = @"https://api.twitter.com/1.1/friends/list.json?cursor=0".URL;
+    SASocialPaginationRequest *request = [[SATwitterUserPaginationRequest alloc] initWithURL:requestURL parameter:@{}];
+    [request performRequestWithAccount:account completion:completion];
 }
 
 #pragma mark -
@@ -365,6 +560,13 @@ SASocialManager *_SASocialManagerDefaultObject = nil;
     return [self.dataSource authorizedAccountIdentifierForSocialAccount:account];
 }
 
+- (NSString *)facebookAPIVersionForSocialAccount:(SASocialAccount *)account {
+    if ([self.dataSource respondsToSelector:_cmd]) {
+        return [self.dataSource facebookAPIVersionForSocialAccount:account];
+    }
+    return nil;
+}
+
 - (NSString *)facebookAppIDForSocialAccount:(SASocialAccount *)account {
     return [self.dataSource facebookAppIDForSocialAccount:account];
 }
@@ -415,8 +617,11 @@ NSString *SocialErrorDomain(NSString *suffix) {
 
 
 SocialErrorType SocialErrorTypeForError(NSError *error) {
-    if ([error.domain isEqualToString:@"com.apple.accounts"] && error.code == 6) {
-        return SocialErrorNoAccountsAvailable;
+    if ([error.domain isEqualToString:@"com.apple.accounts"]) {
+        switch (error.code) {
+            case 6: return SocialErrorNoAccountsAvailable;
+            case 7: return SocialErrorAccountNotAvailable;
+        }
     }
     if ([error.domain isEqualToString:@"com.apple.accounts.disgrant"]) {
         return SocialErrorDisallowedByUser;
