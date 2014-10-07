@@ -80,7 +80,7 @@
             completion(nil, error);
             return;
         }
-        // dlog(1, @"partial data: %@", JSONObject);
+        //dlog(1, @"partial data: %@", JSONObject);
         [self.data addObjectsFromArray:[self dataArrayFromResponseObject:JSONObject]];
         NSURL *nextURL = [self nextURLFromResponseObject:JSONObject];
         if (nextURL != nil) {
@@ -424,13 +424,22 @@
 
 - (NSURL *)nextURLFromResponseObject:(id)JSONObject {
     NSString *URLString = self.URL.absoluteString;
-    NSString *lastCursor = [[URLString componentsSeparatedByString:@"="] lastObject];
-    NSRange lastCursorRange = NSMakeRange(URLString.length - lastCursor.length, lastCursor.length);
-    NSString *newCursor = JSONObject[@"previous_cursor_str"];
-    if (newCursor == nil) {
+    NSString *newCursor = JSONObject[@"next_cursor_str"];
+    if (newCursor == nil || [newCursor isEqualToString:@"0"]) {
         return nil;
     }
-    return [[URLString stringByReplacingCharactersInRange:lastCursorRange withString:newCursor] URL];
+
+    if ([URLString hasSubstring:@"cursor="]) {
+        NSString *lastCursor = [[URLString componentsSeparatedByString:@"cursor="] lastObject];
+        NSRange lastCursorRange = NSMakeRange(URLString.length - lastCursor.length, lastCursor.length);
+        return [[URLString stringByReplacingCharactersInRange:lastCursorRange withString:newCursor] URL];
+    } else {
+        if ([URLString hasSubstring:@"?"]) {
+            return [[URLString stringByAppendingFormat:@"&cursor=%@", newCursor] URL];
+        } else {
+            return [[URLString stringByAppendingFormat:@"?cursor=%@", newCursor] URL];
+        }
+    }
 }
 
 - (NSArray *)dataArrayFromResponseObject:(id)JSONObject {
@@ -495,7 +504,7 @@
         return;
     }
 
-    NSURL *requestURL = @"https://api.twitter.com/1.1/friends/list.json?cursor=0".URL;
+    NSURL *requestURL = @"https://api.twitter.com/1.1/friends/list.json".URL;
     SASocialPaginationRequest *request = [[SATwitterUserPaginationRequest alloc] initWithURL:requestURL parameter:@{}];
     [request performRequestWithAccount:account completion:completion];
 }
