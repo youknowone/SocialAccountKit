@@ -162,12 +162,41 @@
         NSArray *accounts = [actionSheet associatedObjectForKey:@"accounts"];
         ACAccount *account = accounts[buttonIndex - 1];
         self->_accountCandidate = account;
-        [self remoteSessionLoginAccountDidSelectedWithCompletion:[actionSheet associatedObjectForKey:@"completion"]];
+        NSString *selector = [actionSheet associatedObjectForKey:@"selector"];
+        [self performSelector:NSSelectorFromString(selector) withObject:[actionSheet associatedObjectForKey:@"completion"]];
     }
 }
 
 - (void)requestAccessToAccountsWithCompletion:(ACAccountStoreRequestAccessCompletionHandler)completion {
-    [self.manager.store requestAccessToAccountsWithType:self.type options:nil completion:completion];
+    [self requestAccessToAccountsWithOptions:nil completion:completion];
+}
+
+- (void)requestAccessToAccountsWithOptions:(NSDictionary *)options completion:(ACAccountStoreRequestAccessCompletionHandler)completion {
+    [self.manager.store requestAccessToAccountsWithType:self.type options:options completion:^(BOOL granted, NSError *error) {
+        if (granted) {
+            NSArray *accounts = [self.manager.store accountsWithAccountType:self.type];
+            if (accounts.count > 1) {
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Accounts" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
+                    [actionSheet setAssociatedObject:accounts forKey:@"accounts"];
+                    [actionSheet setAssociatedObject:completion forKey:@"completion" policy:OBJC_ASSOCIATION_COPY_NONATOMIC];
+                    [actionSheet setAssociatedObject:@"requestedLoginAccountDidSelectedWithCompletion:" forKey:@"selector"];
+                    for (ACAccount *account in accounts) {
+                        [actionSheet addButtonWithTitle:[@"@%@" format:account.username]];
+                    }
+                    [actionSheet showInView:[UIApplication sharedApplication].windows.lastObject];
+                });
+            } else if (accounts.count == 1) {
+                ACAccount *account = accounts.lastObject;
+                self->_accountCandidate = account;
+                [self requestedLoginAccountDidSelectedWithCompletion:completion];
+            } else {
+                completion(NO, error ?: [NSError errorWithDomain:@"com.apple.accounts" code:6 userInfo:@{@"description": @"No available accounts"}]); // only twitter comes here
+            }
+        } else {
+            completion(NO, error ?: [NSError errorWithDomain:@"com.apple.accounts.disgrant" code:0 userInfo:@{@"description": @"User disgranted facebook account"}]);
+        }
+    }];
 }
 
 - (void)requestOnlyIfAccountIsNotAccessibleByIdentifierWithCompletion:(ACAccountStoreRequestAccessCompletionHandler)completion {
@@ -178,13 +207,7 @@
     } else {
         [self requestAccessToAccountsWithCompletion:^(BOOL granted, NSError *error) {
             if (granted) {
-                NSError *error = nil;
-                ACAccount *account = [self accountForAuthorizedIdentifier:&error];
-                if (account) {
-                    completion(YES, nil);
-                } else {
-                    completion(NO, error);
-                }
+                completion(YES, nil);
             } else {
                 completion(NO, error ?: [NSError errorWithDomain:@"com.apple.accounts.disgrant" code:0 userInfo:@{@"description": @"User disgranted facebook account"}]);
             }
@@ -195,28 +218,15 @@
 - (void)requestRemoteSessionLoginWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
     [self requestAccessToAccountsWithCompletion:^(BOOL granted, NSError *error) {
         if (granted) {
-            NSArray *accounts = [self.manager.store accountsWithAccountType:self.type];
-            if (accounts.count > 1) {
-                dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Accounts" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
-                    [actionSheet setAssociatedObject:accounts forKey:@"accounts"];
-                    [actionSheet setAssociatedObject:completion forKey:@"completion" policy:OBJC_ASSOCIATION_COPY_NONATOMIC];
-                    for (ACAccount *account in accounts) {
-                        [actionSheet addButtonWithTitle:[@"@%@" format:account.username]];
-                    }
-                    [actionSheet showInView:[UIApplication sharedApplication].windows.lastObject];
-                });
-            } else if (accounts.count == 1) {
-                ACAccount *account = accounts.lastObject;
-                self->_accountCandidate = account;
-                [self remoteSessionLoginAccountDidSelectedWithCompletion:completion];
-            } else {
-                completion(nil, error ?: [NSError errorWithDomain:@"com.apple.accounts" code:6 userInfo:@{@"description": @"No available accounts"}]); // only twitter comes here
-            }
+            [self remoteSessionLoginAccountDidSelectedWithCompletion:completion];
         } else {
-            completion(nil, error ?: [NSError errorWithDomain:@"com.apple.accounts.disgrant" code:0 userInfo:@{@"description": @"User disgranted facebook account"}]);
+            completion(nil, error);
         }
     }];
+}
+
+- (void)requestedLoginAccountDidSelectedWithCompletion:(ACAccountStoreRequestAccessCompletionHandler)completion {
+    completion(YES, nil);
 }
 
 - (void)remoteSessionLoginAccountDidSelectedWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
@@ -313,7 +323,7 @@
                               ACFacebookPermissionsKey: [self.dataSource facebookPermissionsKeyForSocialAccount:self],
                               ACFacebookAudienceKey: [self.dataSource facebookAudienceForSocialAccount:self] ?: ACFacebookAudienceFriends,
                               };
-    [self.manager.store requestAccessToAccountsWithType:self.type options:options completion:completion];
+    [super requestAccessToAccountsWithOptions:options completion:completion];
 }
 
 - (void)remoteSessionLoginAccountDidSelectedWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
@@ -334,27 +344,6 @@
             completion(nil, [NSError errorWithDomain:SocialErrorDomain(@"facebook") code:1 userInfo:@{}]);
         }
     }];
-}
-
-- (void)publishFeed:(NSDictionary *)feed completion:(SASocialAPIRequestAccessCompletionHandler)completion {
-    NSError *error = nil;
-    ACAccount *account = [self accountForAuthorizedIdentifier:&error];
-    if (account == nil) {
-        completion(nil, error);
-        return;
-    }
-
-    NSURL *feedURL = [self URLForEdge:@"/me/feed"];
-    SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:feed];
-    feedRequest.account = account;
-
-    [feedRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-        [self handleRequestResult:responseData error:error completion:completion];
-    }];
-}
-
-- (void)publishFeedWithMessage:(NSString *)message completion:(SASocialAPIRequestAccessCompletionHandler)completion {
-    [self publishFeed:@{@"message": message} completion:completion];
 }
 
 - (void)getFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion {
@@ -394,6 +383,28 @@
     NSURL *URL = [self URLForEdge:@"/me/invitable_friends"];
     SASocialPaginationRequest *request = [[SAFacebookPaginationRequest alloc] initWithURL:URL parameter:@{}];
     [request performRequestWithAccount:account completion:completion];
+}
+
+
+- (void)publishFeed:(NSDictionary *)feed completion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    NSError *error = nil;
+    ACAccount *account = [self accountForAuthorizedIdentifier:&error];
+    if (account == nil) {
+        completion(nil, error);
+        return;
+    }
+
+    NSURL *feedURL = [self URLForEdge:@"/me/feed"];
+    SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:feed];
+    feedRequest.account = account;
+
+    [feedRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+        [self handleRequestResult:responseData error:error completion:completion];
+    }];
+}
+
+- (void)publishFeedWithMessage:(NSString *)message completion:(SASocialAPIRequestAccessCompletionHandler)completion {
+    [self publishFeed:@{@"message": message} completion:completion];
 }
 
 @end

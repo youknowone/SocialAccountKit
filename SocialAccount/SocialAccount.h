@@ -47,12 +47,12 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 @interface SASocialAccount: NSObject<UIActionSheetDelegate>
 
-@property(weak,nonatomic) SASocialManager *manager;
-@property(weak,nonatomic) id<SASocialAccountDataSource> dataSource;
+@property(nonatomic,weak) SASocialManager *manager;
+@property(nonatomic,weak) id<SASocialAccountDataSource> dataSource;
 
 - (ACAccount *)accountForAuthorizedIdentifier:(NSError **)errorPtr;
 - (ACAccount *)accountCandidateForLogin;
-@property(strong,nonatomic) ACAccountType *type;
+@property(nonatomic,strong) ACAccountType *type;
 
 - (instancetype)initWithManager:(SASocialManager *)manager;
 
@@ -68,21 +68,22 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 @interface SAFacebookAccount: SASocialAccount
 
-@property(weak,nonatomic) id<SAFacebookAccountDataSource> dataSource;
+@property(nonatomic,weak) id<SAFacebookAccountDataSource> dataSource;
+
+- (void)getTaggableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
+- (void)getInvitableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
 
 - (void)publishFeed:(NSDictionary *)feed completion:(SASocialAPIRequestAccessCompletionHandler)completion;
 - (void)publishFeedWithMessage:(NSString *)message completion:(SASocialAPIRequestAccessCompletionHandler)completion;
-- (void)getTaggableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
-- (void)getInvitableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
 
 @end
 
 
 @interface SATwitterAccount: SASocialAccount<TRATwitterReverseAuthDelegate>
 
-@property(weak,nonatomic) id<SATwitterAccountDataSource> dataSource;
+@property(nonatomic,weak) id<SATwitterAccountDataSource> dataSource;
 
-@property(readonly,nonatomic) TRATwitterReverseAuth *reverseAuth;
+@property(nonatomic,readonly) TRATwitterReverseAuth *reverseAuth;
 
 - (void)updateStatus:(NSString *)status completion:(SASocialAPIRequestAccessCompletionHandler)completion;
 - (void)getFollowingsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
@@ -94,11 +95,11 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 + (SASocialManager *)defaultManager;
 
-@property(weak,nonatomic) id<SASocialAccountAggregatedDataSource> dataSource;
+@property(nonatomic,weak) id<SASocialAccountAggregatedDataSource> dataSource;
 
-@property(readonly,nonatomic) ACAccountStore *store;
-@property(readonly,nonatomic) SAFacebookAccount *facebook;
-@property(readonly,nonatomic) SATwitterAccount *twitter;
+@property(nonatomic,readonly) ACAccountStore *store;
+@property(nonatomic,readonly) SAFacebookAccount *facebook;
+@property(nonatomic,readonly) SATwitterAccount *twitter;
 
 - (void)removeAllSavedAccounts;
 
