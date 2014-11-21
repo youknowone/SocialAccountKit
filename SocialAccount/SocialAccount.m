@@ -164,6 +164,9 @@
         self->_accountCandidate = account;
         NSString *selector = [actionSheet associatedObjectForKey:@"selector"];
         [self performSelector:NSSelectorFromString(selector) withObject:[actionSheet associatedObjectForKey:@"completion"]];
+    } else {
+        ACAccountStoreRequestAccessCompletionHandler completion = [actionSheet associatedObjectForKey:@"completion"];
+        completion(NO, nil);
     }
 }
 
