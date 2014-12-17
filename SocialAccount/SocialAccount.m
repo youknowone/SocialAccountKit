@@ -293,8 +293,6 @@
 
 @interface SAFacebookAccount ()
 
-- (NSURL *)URLForEdge:(NSString *)edge;
-
 @end
 
 
@@ -642,6 +640,7 @@ NSString *SocialErrorDomain(NSString *suffix) {
 SocialErrorType SocialErrorTypeForError(NSError *error) {
     if ([error.domain isEqualToString:@"com.apple.accounts"]) {
         switch (error.code) {
+            case 1: return SocialErrorServerRefusedRenewalRequest;
             case 6: return SocialErrorNoAccountsAvailable;
             case 7: return SocialErrorAccountNotAvailable;
         }

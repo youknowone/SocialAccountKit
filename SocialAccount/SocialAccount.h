@@ -70,6 +70,8 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 @property(nonatomic,weak) id<SAFacebookAccountDataSource> dataSource;
 
+- (NSURL *)URLForEdge:(NSString *)edge;
+
 - (void)getTaggableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
 - (void)getInvitableFriendsWithCompletion:(SASocialAPIRequestAccessCompletionHandler)completion;
 
@@ -108,6 +110,8 @@ typedef void(^SASocialAPIRequestAccessCompletionHandler)(id response, NSError *e
 
 typedef enum : NSUInteger {
     SocialErrorUnknown,
+
+    SocialErrorServerRefusedRenewalRequest,
     SocialErrorNoAccountsAvailable,
     SocialErrorAccountNotAvailable,
     SocialErrorDisallowedByUser,
