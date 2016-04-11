@@ -35,7 +35,8 @@
 		387E890E19D13F5500FD4E46 /* SocialErrorSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialErrorSample.h; sourceTree = "<group>"; };
 		387E890F19D13F5500FD4E46 /* SocialErrorSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialErrorSample.m; sourceTree = "<group>"; };
 		4F3F3CD729C34C3289790B2E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		99D67AF9810898DF9B399373 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		F34C898DBC80C08DFCBC1F89 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +64,8 @@
 				387E88F919D13DC300FD4E46 /* SocialAccount */,
 				387E890319D13DC300FD4E46 /* SocialAccountTests */,
 				387E88F819D13DC300FD4E46 /* Products */,
-				ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */,
 				51548FE059304870B036C749 /* Frameworks */,
+				D032D53A776224BDFE26AC81 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +113,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D032D53A776224BDFE26AC81 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F34C898DBC80C08DFCBC1F89 /* Pods.debug.xcconfig */,
+				99D67AF9810898DF9B399373 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -157,7 +167,7 @@
 		387E88EF19D13DC300FD4E46 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = youknowone.org;
 				TargetAttributes = {
 					387E88F619D13DC300FD4E46 = {
@@ -224,7 +234,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -268,6 +278,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -325,20 +336,8 @@
 		};
 		387E890919D13DC300FD4E46 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */;
+			baseConfigurationReference = F34C898DBC80C08DFCBC1F89 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension/AddressBookExtension\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension/UIKitExtension\"",
-					"\"${PODS_ROOT}/Headers/STLOAuth\"",
-					"\"${PODS_ROOT}/Headers/TwitterReverseAuth\"",
-					"\"${PODS_ROOT}/Headers/TwitterReverseAuth/TwitterReverseAuth\"",
-					"\"${PODS_ROOT}/Headers/cdebug\"",
-					.,
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -346,20 +345,8 @@
 		};
 		387E890A19D13DC300FD4E46 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECF3B867CD1D4AFFA8DA39EB /* Pods.xcconfig */;
+			baseConfigurationReference = 99D67AF9810898DF9B399373 /* Pods.release.xcconfig */;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension/AddressBookExtension\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension/UIKitExtension\"",
-					"\"${PODS_ROOT}/Headers/STLOAuth\"",
-					"\"${PODS_ROOT}/Headers/TwitterReverseAuth\"",
-					"\"${PODS_ROOT}/Headers/TwitterReverseAuth/TwitterReverseAuth\"",
-					"\"${PODS_ROOT}/Headers/cdebug\"",
-					.,
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -378,6 +365,7 @@
 				);
 				INFOPLIST_FILE = SocialAccountTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.youknowone.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -391,6 +379,7 @@
 				);
 				INFOPLIST_FILE = SocialAccountTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.youknowone.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

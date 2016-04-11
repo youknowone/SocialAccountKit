@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.frameworks = 'Accounts', 'Social'
 
   s.dependency 'TwitterReverseAuth'
-  s.dependency 'FoundationExtension'
+  s.dependency 'FoundationExtension', '>= 1.2.4'
 end

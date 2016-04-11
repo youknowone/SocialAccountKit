@@ -1,0 +1,5 @@
+language: objective-c
+sudo: false
+xcode_sdk: iphonesimulator
+xcode_workspace: SocialAccount.xcworkspace
+xcode_scheme: SocialAccount
